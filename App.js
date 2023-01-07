@@ -35,6 +35,8 @@ const firstInput =React.createElement('input',{id:'firstInput',key:'firstInput',
     margin:10
 }});
 
+console.log(firstInput);
+
 const button = React.createElement('input',{key:'submit',type:'button',value:'Click Me!',
 style:{
     color:'white',
@@ -56,4 +58,66 @@ const container = React.createElement('div',{id:'container'},[first,second,first
 
 //const rootElement = ReactDOM.createRoot(root);
 
-rRoot.render(container);
+//JSX
+
+const headingJSX = <h1 key="firstjsxh1"> Hello JSX</h1>;
+
+console.log(headingJSX);
+
+const containerDiv = (
+<div id="jsxDiv" key="jsxDiv">
+    <h1>This is a JSX div</h1>
+    <ul>
+        <li key="firstjsxli">
+            First List Item
+        </li>
+        <li key="secondjsxli">
+            Second List Item
+        </li>
+    </ul>
+</div>
+);
+
+//Functional Component
+
+const HeaderComponent = () =>{
+    return <h1>First react Functional Component</h1>
+};
+
+const ContainerComponent = () => {
+    return (
+        <div>            
+            {<HeaderComponent/>}
+            <ul>
+                <li>
+                    First List Item
+                </li>
+                <li>
+                    Second List Item
+                </li>
+            </ul>
+        </div>
+    );
+}
+
+//Normal function convention
+
+const ListComponent = function() {
+return (
+    <div>
+        {containerDiv}
+        {HeaderComponent()}
+        <ol>
+            <li>
+                First ordered List Item
+            </li>
+            <li>
+                Second ordered List Item
+            </li>
+        </ol>
+    </div>
+);
+
+}
+
+rRoot.render(<ListComponent/>);
