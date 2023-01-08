@@ -106,7 +106,7 @@ const ListComponent = function() {
 return (
     <div>
         {containerDiv}
-        {HeaderComponent()}
+       <HeaderComponent>Check This won't print</HeaderComponent>
         <ol>
             <li>
                 First ordered List Item
