@@ -120,4 +120,4 @@ return (
 
 }
 
-rRoot.render(<ListComponent/>);
+rRoot.render(container);
