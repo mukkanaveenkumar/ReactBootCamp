@@ -1,14 +1,15 @@
 import React from 'react';
 import {restaurantList} from '../constants'
 import RestaurantCard from './RestaurantCard';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import Shimmer from './Shimmer';
 
 function filterData(searchText, restaurants)
 {
     let filteredData = restaurants;
     if(searchText != '')
     {
-        filteredData = restaurants.filter((restaurant) => restaurant.data.name.includes(searchText));
+        filteredData = restaurants.filter((restaurant) => restaurant.data.name.toLowerCase().includes(searchText.toLowerCase()));
     }
     return filteredData;
 }
@@ -16,12 +17,45 @@ function filterData(searchText, restaurants)
 const Body = () => {
     //const searchTxt = "Mehfil";
     //searchText is a local state variable
-    const [searchText] = useState("Mehfil"); //To Create a state variable returns [variablename, function to update the variable]
+    //const [searchText] = useState("Mehfil"); //To Create a state variable returns [variablename, function to update the variable]
     //creating React state variable and set the state variable
     const[searchInput, setSearchInput] = useState("Mehfil");
     //create a state variable for restaurant lists
-    const [restaurants, setRestaurants] = useState(restaurantList);
-    return (
+    const [allRestaurants, setAllRestaurants] = useState([]);
+    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+    
+    //useEffect is the hook allows to specify the callback function.
+    // Trigger for the callback function can be specified by us in a dependency array.
+        // We can specify the state variable in the dependency array. useEffect is called everytime when state changes.
+    // By default after every render useEffect is called.
+    //if dependency Array is empty then it is called only once after render.
+    //dependency array[searchInput] -> once after initial render + everytime after rerender if searchInput is changes
+    useEffect(()=>{
+        //console.log("from useEffect");
+        //API calls need to be done from here
+        getRestaurants();
+    },[]);
+
+    async function getRestaurants()
+    {
+        const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.4978716&lng=78.35619439999999&page_type=DESKTOP_WEB_LISTING");
+        const json = await data.json();
+        console.log(json);
+        setAllRestaurants(json?.data?.cards[2]?.data?.data?.cards);
+        setFilteredRestaurants(json?.data?.cards[2]?.data?.data?.cards);
+    }
+
+    //conditional rendering
+    //restaurants is empty then shimmer UI
+    //restaurants is present then restaurant cards
+    
+    //Early Return
+    if(!allRestaurants) return null;
+
+    //if(filteredRestaurants?.length == 0)
+    //return (<h1>No Restaurant match your filter</h1>)
+
+    return (allRestaurants.length==0)? <Shimmer/> : (
     <React.Fragment>
         <div className="search-container">
             <input type="text" key="search" placeholder="search" 
@@ -31,18 +65,19 @@ const Body = () => {
             <button className="search-btn"
             onClick={()=>{
                 //filter Data
-                const filteredData = filterData(searchInput,restaurantList);
+                const filteredData = filterData(searchInput,allRestaurants);
                 //update restaurants
-                setRestaurants(filteredData);
+                setFilteredRestaurants(filteredData);
             }}
             >Search</button>
         
         </div>
        <div className="restaurantList">
-        {
-        restaurants.map(function(restaurant,index){
+        {     
+        
+        filteredRestaurants.map(function(restaurant,index){
             return <RestaurantCard {...restaurant.data} key={restaurant.data.id}/>
-        })
+        }) 
         }
         </div>
     </React.Fragment>
