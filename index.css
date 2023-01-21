@@ -40,3 +40,18 @@ padding:10px;
     display:flex;
     flex-wrap: wrap;
 }
+
+.shimmerCard {
+    width:200px;
+    height:200px;
+    background: lightgray;
+    margin:10px;
+}
+
+.headerLink{
+    padding:10px;
+}
+
+.restaurantMenu{
+    display: flex;
+}

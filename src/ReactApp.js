@@ -7,6 +7,54 @@ import Header from './components/Header'
 import Body  from './components/Body'
 import Footer from  './components/Footer'
 import {IMG_CDN_URL} from  './constants'
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
+import About from './components/About'
+import Contact from './components/Contact'
+import Error from './components/Error'
+import RestaurantMenu from './components/RestaurantMenu'
+
+//Body
+const AppLayout = () => {
+    return (
+        <React.Fragment>            
+        <Header/>
+        <Outlet/> {/*This is filled by the children of the appRouter*/}
+        <Footer/>
+        </React.Fragment>
+    );
+}
+
+const appRouter = createBrowserRouter([
+    {
+        path:'/',
+        element:<AppLayout/>,
+        errorElement:<Error/>,
+        children : [
+            {
+                path:'/',
+                element:<Body/>
+            },
+            {
+                path:'/about',
+                element:<About/>
+            },
+            {
+                path:'/contact',
+                element:<Contact/>
+            },
+            {
+                path:'/restaurant/:id',
+                element:<RestaurantMenu/>
+            }
+        ]
+    }  
+]);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(<RouterProvider router={appRouter}/>);
+
+
 //Named import
 //import {Title,Header} from './components/Header' (Header.js/Header.jsx also works based on the extension of the file)
 //Named and Default import
@@ -32,45 +80,11 @@ import {IMG_CDN_URL} from  './constants'
 
 
 
-const buttaBiryani = {
-    image: "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/5501d88e0f5cd91351531518b3ce0bc6",
-    name:"Butta Biryani",
-    cusines:["Indian","Biryani"],
-    rating:"4.2"
-}
+
 
 //config Driven
 
-const config = [
-{
-    type:"carousel",
-    cards:[
-        {
-            offerName:"50% off"
-        },
-        {
-            offerName:"No Delivery Charge"
-        }
-    ]
-},
-{
-    type:"restaurantList",
-    cards:[
-        {
-            image: "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/5501d88e0f5cd91351531518b3ce0bc6",
-            name:"Butta Biryani",
-            cusines:["Indian","Biryani"],
-            rating:"4.2"
-        },
-        {
-            image: "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/5501d88e0f5cd91351531518b3ce0bc6",
-            name:"Butta Biryani",
-            cusines:["Indian","Biryani"],
-            rating:"4.2"
-        }
-    ]
-},
-];
+
 
 /*const RestaurantCard = (props) => {
     console.log(props);
@@ -104,18 +118,3 @@ const config = [
 //<RestaurantCard restaurant={restaurantList[0]}/> This is to pass restaurant as props object
 //<RestaurantCard name={restaurantList[0].data.name}/> This is to pass name as props object
 //<RestaurantCard {...restaurantList[0].data}/> Spread operator this is to pass all properties of the data
-
-//Body
-const AppLayout = () => {
-    return (
-        <React.Fragment>            
-        <Header/>
-        <Body/>
-        <Footer/>
-        </React.Fragment>
-    );
-}
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-
-root.render(AppLayout());
