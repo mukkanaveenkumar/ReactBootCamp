@@ -4,16 +4,8 @@ import RestaurantCard from './RestaurantCard';
 import {useState, useEffect} from 'react';
 import Shimmer from './Shimmer';
 import {Link} from 'react-router-dom';
-
-function filterData(searchText, restaurants)
-{
-    let filteredData = restaurants;
-    if(searchText != '')
-    {
-        filteredData = restaurants.filter((restaurant) => restaurant.data.name.toLowerCase().includes(searchText.toLowerCase()));
-    }
-    return filteredData;
-}
+import { filterData } from '../utils/helper'
+import useOnline from '../utils/useOnline'
 
 const Body = () => {
     //const searchTxt = "Mehfil";
@@ -52,6 +44,13 @@ const Body = () => {
     
     //Early Return
     if(!allRestaurants) return null;
+
+    const isOnline = useOnline();
+
+    if(!isOnline)
+    {
+        return <h1>🔴 You are Offline ! Please check your internet connection</h1>
+    }
 
     //if(filteredRestaurants?.length == 0)
     //return (<h1>No Restaurant match your filter</h1>)
