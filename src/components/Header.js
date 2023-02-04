@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import Logo from "../assets/img/Foodvilla.jpg"
 import {Link} from "react-router-dom"
+import useOnline from '../utils/useOnline';
 
 export const Title = () => (
     <a href="/">
@@ -22,7 +23,7 @@ const Header = () => {
     //let title = "Food Villa";
    // const [title,setTitle] = useState("Food Villa");
    const [isLoggedInUser,setIsLoggedInUser] = useState(false);
-    console.log('render()');
+   const isOnline = useOnline();
     return (
     <div className="header">
         <Title/>     
@@ -43,11 +44,17 @@ const Header = () => {
                         Contact Us
                     </li>
                 </Link>
+                <Link to="/instamart" className="headerLink">
+                    <li key="instamart">
+                        Instamart
+                    </li>
+                </Link>
                 <li key="cart">
                     Cart
                 </li>
             </ul>
         </div>
+        <h1> {isOnline?  '📗'  : '🔴' }</h1>
         {
             //JS Expression & Statement
             //only expression are allowed in JSX we can't write statements

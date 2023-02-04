@@ -1,6 +1,6 @@
 // import React Libraries
 
-import React from 'react'
+import React, {lazy, Suspense} from 'react'
 import ReactDOM from 'react-dom/client'
 //Default import
 import Header from './components/Header'
@@ -8,11 +8,24 @@ import Body  from './components/Body'
 import Footer from  './components/Footer'
 import {IMG_CDN_URL} from  './constants'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
-import About from './components/About'
+//import About from './components/About'
 import Contact from './components/Contact'
 import Error from './components/Error'
 import RestaurantMenu from './components/RestaurantMenu'
 import Profile from './components/ProfileFC'
+import Shimmer from './components/Shimmer'
+//import Instamart from './components/Instamart'
+
+//Data Chunking
+//lazy loading
+//Code Splitting
+//On Demand Loading
+//Dynamic Bundling
+//Dynamic Import
+
+const Instamart = lazy(()=> import("./components/Instamart"));
+
+const About = lazy(() => import('./components/About'));
 
 //Body
 const AppLayout = () => {
@@ -37,7 +50,10 @@ const appRouter = createBrowserRouter([
             },
             {
                 path:'about',
-                element:<About/>,
+                element:
+                <Suspense fallback={<h1> About is loading</h1>}>
+                    <About/>
+                </Suspense>,
                 children:[{
                     path:'profile', // if we specify path as /profile then it is considered as http://localhost/profile 
                     element:<Profile/>
@@ -50,6 +66,12 @@ const appRouter = createBrowserRouter([
             {
                 path:'/restaurant/:id',
                 element:<RestaurantMenu/>
+            },
+            {
+                path:'instamart',
+                element: <Suspense fallback={<Shimmer/>}>
+                    <Instamart/>
+                    </Suspense>
             }
         ]
     }  
