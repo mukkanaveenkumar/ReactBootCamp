@@ -2,6 +2,7 @@ import {useState} from 'react';
 import Logo from "../assets/img/Foodvilla.jpg"
 import {Link} from "react-router-dom"
 import useOnline from '../utils/useOnline';
+import { useSelector } from 'react-redux';
 
 export const Title = () => (
     <a href="/">
@@ -24,6 +25,7 @@ const Header = () => {
    // const [title,setTitle] = useState("Food Villa");
    const [isLoggedInUser,setIsLoggedInUser] = useState(false);
    const isOnline = useOnline();
+   const cartItems = useSelector((store) => store.cart.items);
     return (
     <div className="header">
         <Title/>     
@@ -49,9 +51,13 @@ const Header = () => {
                         Instamart
                     </li>
                 </Link>
-                <li key="cart">
-                    Cart
-                </li>
+                <Link to="/cart" className="headerLink">
+                    <li key="cart">
+                        Cart
+                    </li>
+                </Link>
+               
+                <li> {cartItems.length} - Item(s)</li>
             </ul>
         </div>
         <h1> {isOnline?  '📗'  : '🔴' }</h1>

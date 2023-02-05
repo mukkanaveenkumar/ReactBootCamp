@@ -14,6 +14,10 @@ import Error from './components/Error'
 import RestaurantMenu from './components/RestaurantMenu'
 import Profile from './components/ProfileFC'
 import Shimmer from './components/Shimmer'
+import {Provider } from 'react-redux'
+import store from './utils/store'
+import Cart from './components/Cart'
+
 //import Instamart from './components/Instamart'
 
 //Data Chunking
@@ -30,10 +34,12 @@ const About = lazy(() => import('./components/About'));
 //Body
 const AppLayout = () => {
     return (
-        <React.Fragment>            
+        <React.Fragment> 
+        <Provider store= {store}>
         <Header/>
         <Outlet/> {/*This is filled by the children of the appRouter*/}
         <Footer/>
+        </Provider>
         </React.Fragment>
     );
 }
@@ -69,9 +75,14 @@ const appRouter = createBrowserRouter([
             },
             {
                 path:'instamart',
-                element: <Suspense fallback={<Shimmer/>}>
+                element: 
+                    <Suspense fallback={<Shimmer/>}>
                     <Instamart/>
                     </Suspense>
+            },
+            {
+                path:'/cart',
+                element:<Cart/>
             }
         ]
     }  
